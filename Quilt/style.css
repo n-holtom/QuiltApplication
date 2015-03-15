@@ -1,0 +1,198 @@
+/*
+    RESET
+*/
+* {
+    margin: 0;
+    padding: 0;
+  }
+.clear { clear: both; }
+img, a img { border: none; }
+input { outline: 0; }
+a:link
+{
+
+    text-decoration: none;
+}
+a:visited
+{
+
+    text-decoration: none;
+}
+a:hover
+{
+    text-decoration: none;
+}
+a:active
+{
+    text-decoration: none;
+}
+
+/*
+    STRUCTURE
+*/
+html{ height: 100%; }
+
+body {
+    font: 14px/1.1 Helvetica, Sans-Serif;
+    background: url(img/background.jpg) repeat-x;
+    height: 100%;
+}
+#page-wrap {
+    width: 1200px;
+    margin: 6px auto 50px;
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    height: 800px;
+}
+hr {
+    height: 1px;
+    background: transparent;
+    clear: both;
+    margin: 0;
+    border: none;
+    display: block;
+}
+
+/*
+    HEADER
+*/
+@font-face{
+    font-family: "Karamuruh";
+    src: url('fonts/karamuruh.ttf');
+}
+
+#header {
+    height: 100px;
+    position: relative;
+    margin: 10px;
+    top: 10px;
+    border: 2px dashed;
+    border-radius: 10px;
+}
+
+#logo {
+
+}
+
+#header img {
+    display: block;
+    border: none;
+    font-family: "Karamuruh", serif;
+    position: absolute;
+    padding-left: 10px;
+    z-index: 1;
+    overflow: hidden;
+    font-size: 6em;
+
+}
+
+#control {
+    width: 500px;
+    float: right;
+    padding: 10px 10px 0 0;
+    text-align: right;
+}
+
+#main-content{
+    position: relative;
+}
+
+/*
+    TOP MENU
+*/
+ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin-top: 10px;
+    list-style-type: none;
+    background-color: purple;
+}
+li {
+    display: inline;
+}
+
+#menu a {
+    float: left;
+    width: 6em;
+    text-decoration: none;
+    color: white;
+    background-color: purple;
+    padding: 0.5em 0.6em;
+    border-right: 1px solid white;
+}
+
+/*
+    TOOLBAR
+*/
+#toolbar {
+    height: 20px;
+    width: 100%;
+    background-color: #c0c0c0;
+}
+
+/*
+    SIDEBAR
+*/
+#toolbox {
+    position: relative;
+    float: left;
+    left: 0;
+    padding: 50px 30px 0 0;
+    border: 2px dashed;
+    border-radius: 10px;
+    margin: 10px;
+    height: 69%;
+    width: 150px;
+}
+#toolbox h4 {
+    text-align: center;
+    font: italic 20px Baskerville, Georgia, Serif;
+    margin: 0 0 5px 0;
+}
+
+/*
+    OBJECT MENU
+*/
+#object-menu {
+    position: relative;
+    float: right;
+    width: 150px;
+    padding: 50px 30px 0 0;
+    border: 2px dashed;
+    border-radius: 10px;
+    margin: 10px;
+    height: 69%;
+
+}
+
+/*
+    DRAWING AREA
+*/
+#canvas {
+    position: relative;
+    float: left;
+    height: 600px;
+    width: 768px;
+    border: 2px dashed;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+svg {
+    position: absolute;
+    margin: 10px;
+}
+
+
+/*
+    STATUS BAR
+*/
+#status-bar{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #c0c0c0;
+    height: 20px;
+}
