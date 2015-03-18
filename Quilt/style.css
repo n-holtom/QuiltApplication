@@ -183,6 +183,8 @@ li {
 svg {
     position: absolute;
     margin: 10px;
+    height: 600px;
+    width: 768px;
 }
 
 

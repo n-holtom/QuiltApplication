@@ -10,6 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 </head>
 
 <body>
