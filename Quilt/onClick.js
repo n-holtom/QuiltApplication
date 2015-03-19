@@ -6,8 +6,9 @@ $(document).ready(function() {
     init();
 });
 
-    var initialX;
-    var initialY;
+var initialX;
+var initialY;
+var selectedShape = {};
 
 var svg = document.getElementById('svg1');
 rect = {};
@@ -21,14 +22,12 @@ var handleSize = 8;
 var currentHandle = false;
 
 
+
 function init() {
     svg.addEventListener("mousemove", mouseMove, false);
     svg.addEventListener('mousedown', mouseDown, false);
     svg.addEventListener('mousedown', mouseHandle, false);
     svg.addEventListener('mouseup', mouseUp, false);
-    svg.addEventListener("contextmenu", highlightShape, false);
-
-
 }
 
 
@@ -49,6 +48,11 @@ function mouseDown(event) {
         // Allow drag functionality
         drag = true;
     }
+    else if (selectTool.checked)
+    {
+        highlightShape();
+    }
+
 }
 
 function mouseUp(event) {
@@ -64,6 +68,7 @@ function mouseUp(event) {
         shapesArray[shapeNumber].startY = rect.startY;
         shapesArray[shapeNumber].id = shapeNumber;
         shapesArray[shapeNumber].color = rect.color;
+        shapesArray[shapeNumber].selected = false;
 
 
         shapeNumber++;
@@ -103,35 +108,36 @@ function draw()
 
 }
 
-function highlightShape(event)
+function highlightShape()
 {
-    if (selectTool.checked)
-    {
-
-        var i;
+         var i;
 
         var xLocation = event.pageX - offset_coords.left;
         var yLocation = event.pageY - offset_coords.top;
 
+        // Deselect all shapes
         for (i = 0; i < shapeNumber; i++)
         {
+            document.getElementById("rect" + i).setAttribute("stroke-width", 0);
+        }
+
+        for (i = 0; i < shapeNumber; i++)
+        {
+
             if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX + shapesArray[i].w))) &&
-                ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY + shapesArray[i].h))))
-            {
+                ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY + shapesArray[i].h)))) {
                 var toHighlight = document.getElementById("rect" + i);
 
-                if (toHighlight.getAttribute("stroke-width") == 0)
-                {
+                if (toHighlight.getAttribute("stroke-width") == 0) {
                     document.getElementById("rect" + i).setAttribute("stroke-width", 3);
                     document.getElementById("rect" + i).setAttribute("stroke", "#000000");
+                    selectedShape = shapesArray[i];
                 }
-                else
-                {
+                else {
                     document.getElementById("rect" + i).setAttribute("stroke-width", 0);
                 }
             }
         }
-    }
 
 }
 
