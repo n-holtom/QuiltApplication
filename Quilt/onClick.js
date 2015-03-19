@@ -50,7 +50,7 @@ function mouseDown(event) {
     }
     else if (selectTool.checked)
     {
-        highlightShape();
+        highlightShape(event.pageX, event.pageY);
     }
 
 }
@@ -108,12 +108,12 @@ function draw()
 
 }
 
-function highlightShape()
+function highlightShape(x, y)
 {
          var i;
 
-        var xLocation = event.pageX - offset_coords.left;
-        var yLocation = event.pageY - offset_coords.top;
+        var xLocation = x - offset_coords.left;
+        var yLocation = y - offset_coords.top;
 
         // Deselect all shapes
         for (i = 0; i < shapeNumber; i++)
