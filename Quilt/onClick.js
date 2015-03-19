@@ -10,6 +10,8 @@ $(document).ready(function() {
 var svg = document.getElementById('svg1'), rect = {}, drag = false;
 var colorPicker = document.getElementById('colorPicker');
 
+
+
 function init() {
     svg.addEventListener("mousemove", mouseMove, false);
     svg.addEventListener('mousedown', mouseDown, false);
@@ -21,40 +23,52 @@ function init() {
 offset_coords = $("#svg1").offset();
 
 function mouseDown(event) {
+    // Set start coordinates of rectangle
     rect.startX = event.pageX - offset_coords.left;
     rect.startY = event.pageY - offset_coords.top;
+    rect.h = 1;
+    rect.w = 1;
+    rect.id = shapeNumber;
+
+    draw();
+
+    // Allow drag functionality
     drag = true;
 }
 
 function mouseUp(event) {
     drag = false;
 
-    rect.w = (event.pageX - offset_coords.left) - rect.startX;
-    rect.h = (event.pageY - offset_coords.top) - rect.startY;
+    shapesArray[shapeNumber] = {};
+
+    shapesArray[shapeNumber].w = rect.w;
+    shapesArray[shapeNumber].h = rect.h;
+    shapesArray[shapeNumber].startX = rect.startX;
+    shapesArray[shapeNumber].startY = rect.startY;
+    shapesArray[shapeNumber].id = shapeNumber;
+    shapesArray[shapeNumber].color = rect.color;
 
 
-    draw();
-
-    rect.id = shapeNumber;
-    shapesArray[shapeNumber-2] = rect;
-
-
+    shapeNumber++;
 }
 
 function mouseMove(event) {
     if (drag)
     {
-
         rect.w = (event.pageX - offset_coords.left) - rect.startX;
         rect.h = (event.pageY - offset_coords.top) - rect.startY;
 
-        if (shapeNumber > 0)
-            remove(--shapeNumber);
-
-        draw();
+        update(shapeNumber);
     }
 }
 
+function update(rectangleNumber)
+{
+    var toUpdate = document.getElementById("rect"+rectangleNumber);
+
+    toUpdate.setAttribute("width", rect.w);
+    toUpdate.setAttribute("height", rect.h);
+}
 
 var shapeNumber = 0;
 
@@ -62,16 +76,10 @@ var shapesArray = {};
 
 function draw()
 {
+    rect.color = colorPicker.value;
 
-    var color = colorPicker.value;
-
-    svg.innerHTML += '<rect id=rect' + shapeNumber++ +' width="' + rect.w + '" height="' + rect.h + '" x="' + rect.startX + '" y="' + rect.startY +
-        '" style="fill:#' + color.charAt(0) + color.charAt(1) + color.charAt(2) + color.charAt(3) + color.charAt(4)
-        + color.charAt(5) +'"'+ ' />';
-
-
-    //var array = [Math.abs(w), Math.abs(h), x, y, color, name];
-    //rectArray[rectNum] = array; document.getElementById('rectArrayDisplay').innerHTML = rectArray;
+    svg.innerHTML += '<rect id=rect' + shapeNumber +' width="' + rect.w + '" height="' + rect.h + '" x="' + rect.startX + '" y="' + rect.startY +
+        '" style="fill:#' + rect.color +'"'+ ' />';
 
 }
 
@@ -87,11 +95,16 @@ function highlightShape(event)
         if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX+shapesArray[i].w))) &&
             ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY+shapesArray[i].h))))
         {
-            document.getElementById("rect"+i).style.fill = '#FFFFFF';
+            
+
+            document.getElementById("rect"+i).setAttribute("stroke-width",3);
+            document.getElementById("rect"+i).setAttribute("stroke","#000000");
+
         }
     }
 
 }
+
 
 function remove(rectangleNumber)
 {

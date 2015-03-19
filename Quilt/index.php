@@ -12,8 +12,6 @@
             <div id="canvas">
 
                 <svg id ="svg1">
-                    <rect width="300" height="100" style="fill:rgb(48,159,200);stroke-width:3;stroke:rgb(0,0,0)" />
-
 
                 </svg>
 
