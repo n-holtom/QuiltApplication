@@ -118,7 +118,11 @@ function highlightShape(x, y)
         // Deselect all shapes
         for (i = 0; i < shapeNumber; i++)
         {
-            document.getElementById("rect" + i).setAttribute("stroke-width", 0);
+            if (document.getElementById("rect" + i) != null)
+            {
+                document.getElementById("rect" + i).setAttribute("stroke-width", 0);
+                deleteSelectedShapeData();
+            }
         }
 
         for (i = 0; i < shapeNumber; i++)
@@ -132,6 +136,8 @@ function highlightShape(x, y)
                     document.getElementById("rect" + i).setAttribute("stroke-width", 3);
                     document.getElementById("rect" + i).setAttribute("stroke", "#000000");
                     selectedShape = shapesArray[i];
+
+                    updateSelectedShapeData();
                 }
                 else {
                     document.getElementById("rect" + i).setAttribute("stroke-width", 0);
@@ -141,6 +147,31 @@ function highlightShape(x, y)
 
 }
 
+function updateSelectedShapeData()
+{
+    document.getElementById("shapeId").value = selectedShape.id;
+    document.getElementById("shapeColor").value = selectedShape.color;
+    document.getElementById("shapeXCoordinate").value = selectedShape.startX;
+    document.getElementById("shapeYCoordinate").value = selectedShape.startY;
+    document.getElementById("shapeWidth").value = selectedShape.w;
+    document.getElementById("shapeHeight").value = selectedShape.h;
+
+}
+
+function deleteSelectedShapeData()
+{
+    document.getElementById("shapeId").value = " ";
+    document.getElementById("shapeColor").value = " ";
+    document.getElementById("shapeXCoordinate").value = " ";
+    document.getElementById("shapeYCoordinate").value = " ";
+    document.getElementById("shapeWidth").value = " ";
+    document.getElementById("shapeHeight").value = " ";
+}
+
+function deleteSelectedShape()
+{
+    remove(selectedShape.id);
+}
 
 function remove(rectangleNumber)
 {
