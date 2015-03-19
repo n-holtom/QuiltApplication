@@ -168,6 +168,7 @@ function deleteSelectedShapeData()
 function deleteSelectedShape()
 {
     remove(selectedShape.id);
+    removeHandles(selectedShape.id)
 }
 
 function remove(rectangleNumber)
@@ -215,7 +216,7 @@ function mouseHandle(e) {
         if (!drag)
             currentHandle = getHandle(point(e.pageX - offset_coords.left, e.pageY - offset_coords.top));
         if (!currentHandle && previousHandle != false){
-            removeHandles(previousHandle);
+            removeHandles(selectedShape.id);
         }
         if (currentHandle && drag) {
             var mousePos = point(e.pageX - offset_coords.left, e.pageY - offset_coords.top);
@@ -299,18 +300,39 @@ function drawHandle() {
                 posHandle.y = rect.startY + rect.h / 2;
                 break;
         }
-        drawCorner(currentHandle,posHandle.x, posHandle.y, handleSize)
+        drawCorner(selectedShape.id,currentHandle,posHandle.x, posHandle.y, handleSize)
     }
 }
 
-function drawCorner(handle, x, y, handleSize) {
-    svg.innerHTML += '<circle id=' + shapeNumber + handle +' cx="' + x + '" cy="' + y + '" r="' + handleSize + '" fill=black" />';
+function drawCorner(shapeID, handle, x, y, handleSize) {
+    svg.innerHTML += '<circle id=' + shapeID + handle +' cx="' + x + '" cy="' + y + '" r="' + handleSize + '" fill=black" />';
 }
 
-function removeHandles(handle) {
-    var toRemove = document.getElementById(shapeNumber + handle);
-
-    svg.removeChild(toRemove);
+function removeHandles(shapeID) {
+    var toRemove = document.getElementById(shapeID + 'topLeft');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'topRight');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'top');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'bottomLeft');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'bottomRight');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'bottom');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'left');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
+    var toRemove = document.getElementById(shapeID + 'right');
+    if (toRemove != null)
+        svg.removeChild(toRemove);
 }
 
 
