@@ -1,5 +1,7 @@
 
 
+
+
 $(document).ready(function() {
     init();
 });
@@ -9,56 +11,68 @@ $(document).ready(function() {
 
 var svg = document.getElementById('svg1'), rect = {}, drag = false;
 var colorPicker = document.getElementById('colorPicker');
-
-
+var selectTool = document.getElementById('selectRectangle');
+var addTool = document.getElementById('addRectangle');
 
 function init() {
     svg.addEventListener("mousemove", mouseMove, false);
     svg.addEventListener('mousedown', mouseDown, false);
     svg.addEventListener('mouseup', mouseUp, false);
     svg.addEventListener("contextmenu", highlightShape, false);
+
+
 }
 
 
 offset_coords = $("#svg1").offset();
 
 function mouseDown(event) {
-    // Set start coordinates of rectangle
-    rect.startX = event.pageX - offset_coords.left;
-    rect.startY = event.pageY - offset_coords.top;
-    rect.h = 1;
-    rect.w = 1;
-    rect.id = shapeNumber;
 
-    draw();
+    if (addTool.checked)
+    {
 
-    // Allow drag functionality
-    drag = true;
+        // Set start coordinates of rectangle
+        rect.startX = event.pageX - offset_coords.left;
+        rect.startY = event.pageY - offset_coords.top;
+        rect.h = 1;
+        rect.w = 1;
+        rect.id = shapeNumber;
+
+        draw();
+
+        // Allow drag functionality
+        drag = true;
+    }
 }
 
 function mouseUp(event) {
-    drag = false;
+    if (addTool.checked) {
 
-    shapesArray[shapeNumber] = {};
+        drag = false;
 
-    shapesArray[shapeNumber].w = rect.w;
-    shapesArray[shapeNumber].h = rect.h;
-    shapesArray[shapeNumber].startX = rect.startX;
-    shapesArray[shapeNumber].startY = rect.startY;
-    shapesArray[shapeNumber].id = shapeNumber;
-    shapesArray[shapeNumber].color = rect.color;
+        shapesArray[shapeNumber] = {};
+
+        shapesArray[shapeNumber].w = rect.w;
+        shapesArray[shapeNumber].h = rect.h;
+        shapesArray[shapeNumber].startX = rect.startX;
+        shapesArray[shapeNumber].startY = rect.startY;
+        shapesArray[shapeNumber].id = shapeNumber;
+        shapesArray[shapeNumber].color = rect.color;
 
 
-    shapeNumber++;
+        shapeNumber++;
+    }
 }
 
 function mouseMove(event) {
-    if (drag)
+    if (addTool.checked)
     {
-        rect.w = (event.pageX - offset_coords.left) - rect.startX;
-        rect.h = (event.pageY - offset_coords.top) - rect.startY;
+        if (drag) {
+            rect.w = (event.pageX - offset_coords.left) - rect.startX;
+            rect.h = (event.pageY - offset_coords.top) - rect.startY;
 
-        update(shapeNumber);
+            update(shapeNumber);
+        }
     }
 }
 
@@ -85,21 +99,31 @@ function draw()
 
 function highlightShape(event)
 {
-    var i;
-
-    var xLocation = event.pageX - offset_coords.left;
-    var yLocation = event.pageY - offset_coords.top;
-
-    for (i=0; i<shapeNumber; i++)
+    if (selectTool.checked)
     {
-        if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX+shapesArray[i].w))) &&
-            ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY+shapesArray[i].h))))
+
+        var i;
+
+        var xLocation = event.pageX - offset_coords.left;
+        var yLocation = event.pageY - offset_coords.top;
+
+        for (i = 0; i < shapeNumber; i++)
         {
-            
+            if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX + shapesArray[i].w))) &&
+                ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY + shapesArray[i].h))))
+            {
+                var toHighlight = document.getElementById("rect" + i);
 
-            document.getElementById("rect"+i).setAttribute("stroke-width",3);
-            document.getElementById("rect"+i).setAttribute("stroke","#000000");
-
+                if (toHighlight.getAttribute("stroke-width") == 0)
+                {
+                    document.getElementById("rect" + i).setAttribute("stroke-width", 3);
+                    document.getElementById("rect" + i).setAttribute("stroke", "#000000");
+                }
+                else
+                {
+                    document.getElementById("rect" + i).setAttribute("stroke-width", 0);
+                }
+            }
         }
     }
 
