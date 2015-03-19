@@ -1,7 +1,3 @@
-
-
-
-
 $(document).ready(function() {
     init();
 });
@@ -11,14 +7,14 @@ var initialY;
 var selectedShape = {};
 
 var svg = document.getElementById('svg1');
-rect = {};
-drag = false;
+var rect = {};
+var drag = false;
 var colorPicker = document.getElementById('colorPicker');
 var selectTool = document.getElementById('selectRectangle');
 var addTool = document.getElementById('addRectangle');
 var offset_coords = $("#svg1").offset();
 
-var handleSize = 8;
+var handleSize = 10;
 var currentHandle = false;
 
 
@@ -26,7 +22,7 @@ var currentHandle = false;
 function init() {
     svg.addEventListener("mousemove", mouseMove, false);
     svg.addEventListener('mousedown', mouseDown, false);
-    svg.addEventListener('mousedown', mouseHandle, false);
+    svg.addEventListener('mousemove', mouseHandle, false);
     svg.addEventListener('mouseup', mouseUp, false);
 }
 
@@ -56,6 +52,7 @@ function mouseDown(event) {
 }
 
 function mouseUp(event) {
+    currentHandle = false;
     if (addTool.checked) {
 
         drag = false;
@@ -162,71 +159,127 @@ function dist(p1, p2) {
 }
 
 function getHandle(mouse) {
-    if (dist(mouse, point(rect.x, rect.y)) <= handleSize)
+    if (dist(mouse, point(rect.startX, rect.startY)) <= handleSize)
         return 'topLeft';
-    if (dist(mouse, point(rect.x + rect.w, rect.y)) <= handleSize)
+    if (dist(mouse, point(rect.startX + rect.w, rect.startY)) <= handleSize)
         return 'topRight';
-    if (dist(mouse, point(rect.x, rect.y + rect.h)) <= handleSize)
+    if (dist(mouse, point(rect.startX, rect.startY + rect.h)) <= handleSize)
         return 'bottomLeft';
-    if (dist(mouse, point(rect.x + rect.w, rect.y + rect.h)) <= handleSize)
+    if (dist(mouse, point(rect.startX + rect.w, rect.startY + rect.h)) <= handleSize)
         return 'bottomRight';
-    if (dist(mouse, point(rect.x + rect.w / 2, rect.y)) <= handleSize)
+    if (dist(mouse, point(rect.startX + rect.w / 2, rect.startY)) <= handleSize)
         return 'top';
-    if (dist(mouse, point(rect.x, rect.y + rect.h / 2)) <= handleSize)
+    if (dist(mouse, point(rect.startX, rect.startY + rect.h / 2)) <= handleSize)
         return 'left';
-    if (dist(mouse, point(rect.x + rect.w /2, rect.y + rect.h)) <= handleSize)
+    if (dist(mouse, point(rect.startX + rect.w /2, rect.startY + rect.h)) <= handleSize)
         return 'bottom';
-    if (dist(mouse, point(rect.x + rect.w, rect.y + rect.h / 2)) <= handleSize)
+    if (dist(mouse, point(rect.startX + rect.w, rect.startY + rect.h / 2)) <= handleSize)
         return 'right';
     return false;
 }
 
 function mouseHandle(e) {
-    var previousHandle = currentHandle;
-    if (!drag)
-        currentHandle = getHandle(point(e.pageX - offset_coords.left, e.pageY - offset_coords.top));
-    if (currentHandle && drag) {
-        var mousePos = point(e.pageX - offset_coords.left, e.pageY - offset_coords.top);
+    if (selectTool.checked) {
+        var previousHandle = currentHandle;
+        if (!drag)
+            currentHandle = getHandle(point(e.pageX - offset_coords.left, e.pageY - offset_coords.top));
+        if (!currentHandle && previousHandle != false){
+            removeHandles(previousHandle);
+        }
+        if (currentHandle && drag) {
+            var mousePos = point(e.pageX - offset_coords.left, e.pageY - offset_coords.top);
+            switch (currentHandle) {
+                case 'topLeft':
+                    rect.w += rect.startX - mousePos.x;
+                    rect.h += rect.startY - mousePos.y;
+                    rect.startX = mousePos.x;
+                    rect.startY = mousePos.y;
+                    break;
+                case 'topRight':
+                    rect.w = mousePos.x - rect.startX;
+                    rect.h += rect.startY - mousePos.y;
+                    rect.startY = mousePos.y;
+                    break;
+                case 'bottomLeft':
+                    rect.w += rect.startX - mousePos.x;
+                    rect.startX = mousePos.x;
+                    rect.h = mousePos.y - rect.startY;
+                    break;
+                case 'bottomRight':
+                    rect.w = mousePos.x - rect.startX;
+                    rect.h = mousePos.y - rect.startY;
+                    break;
+                case 'top':
+                    rect.h += rect.startY - mousePos.y;
+                    rect.startY = mousePos.y;
+                    break;
+                case 'left':
+                    rect.w += rect.startX - mousePos.x;
+                    rect.startX = mousePos.x;
+                    break;
+                case 'bottom':
+                    rect.h = mousePos.y - rect.startY;
+                    break;
+                case 'right':
+                    rect.w = mousePos.x - rect.startX;
+                    break;
+            }
+        }
+        if (drag || currentHandle != previousHandle)
+            drawHandle(shapeNumber-1);
+    }
+
+}
+
+function drawHandle() {
+    if (currentHandle) {
+        var posHandle = point(0,0);
         switch (currentHandle) {
             case 'topLeft':
-                rect.w += rect.x - mousePos.x;
-                rect.h += rect.y - mousePos.y;
-                rect.x = mousePos.x;
-                rect.y = mousePos.y;
+                posHandle.x = rect.startX;
+                posHandle.y = rect.startY;
                 break;
             case 'topRight':
-                rect.w = mousePos.x - rect.x;
-                rect.h += rect.y - mousePos.y;
-                rect.y = mousePos.y;
+                posHandle.x = rect.startX + rect.w;
+                posHandle.y = rect.startY;
                 break;
             case 'bottomLeft':
-                rect.w += rect.x - mousePos.x;
-                rect.x = mousePos.x;
-                rect.h = mousePos.y - rect.y;
+                posHandle.x = rect.startX;
+                posHandle.y = rect.startY + rect.h;
                 break;
             case 'bottomRight':
-                rect.w = mousePos.x - rect.x;
-                rect.h = mousePos.y - rect.y;
+                posHandle.x = rect.startX + rect.w;
+                posHandle.y = rect.startY + rect.h;
                 break;
             case 'top':
-                rect.h += rect.y - mousePos.y;
-                rect.y = mousePos.y;
+                posHandle.x = rect.startX + rect.w / 2;
+                posHandle.y = rect.startY;
                 break;
             case 'left':
-                rect.w += rect.x - mousePos.x;
-                rect.x = mousePos.x;
+                posHandle.x = rect.startX;
+                posHandle.y = rect.startY + rect.h / 2;
                 break;
             case 'bottom':
-                rect.h = mousePos.y - rect.y;
+                posHandle.x = rect.startX + rect.w / 2;
+                posHandle.y = rect.startY + rect.h;
                 break;
             case 'right':
-                rect.w = mousePos.x - rect.x;
+                posHandle.x = rect.startX + rect.w;
+                posHandle.y = rect.startY + rect.h / 2;
                 break;
         }
+        drawCorner(currentHandle,posHandle.x, posHandle.y, handleSize)
     }
-    if (drag || currentHandle != previousHandle)
-        update(shapeNumber);
+}
 
+function drawCorner(handle, x, y, handleSize) {
+    svg.innerHTML += '<circle id=' + shapeNumber + handle +' cx="' + x + '" cy="' + y + '" r="' + handleSize + '" fill=black" />';
+}
+
+function removeHandles(handle) {
+    var toRemove = document.getElementById(shapeNumber + handle);
+
+    svg.removeChild(toRemove);
 }
 
 
