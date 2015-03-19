@@ -1,39 +1,5 @@
 
 
-/**
- * Created by Nick on 3/15/2015.
-
-
-var initialX;
-var initialY;
-
-
-function mouseDown(event) {
-
-
-
-}
-
-
-
-
-function mouseUp(event) {
-
-
-
-}
-
-function init() {
-    var x = document.getElementById("canvas");
-    if(x) {
-        x.addEventListener("mousedown", mouseDown, false);
-    }
-}
-
-init();
-
- */
-
 $(document).ready(function() {
     init();
 });
@@ -42,45 +8,98 @@ $(document).ready(function() {
     var initialY;
 
 var svg = document.getElementById('svg1'), rect = {}, drag = false;
+var colorPicker = document.getElementById('colorPicker');
 
 function init() {
     svg.addEventListener("mousemove", mouseMove, false);
     svg.addEventListener('mousedown', mouseDown, false);
     svg.addEventListener('mouseup', mouseUp, false);
+    svg.addEventListener("contextmenu", highlightShape, false);
 }
 
+
+offset_coords = $("#svg1").offset();
+
 function mouseDown(event) {
-    rect.startX = event.pageX - 240;
-    rect.startY = event.pageY - 210;
+    rect.startX = event.pageX - offset_coords.left;
+    rect.startY = event.pageY - offset_coords.top;
     drag = true;
 }
+
 function mouseUp(event) {
     drag = false;
 
-    rect.w = (event.pageX - 240) - rect.startX;
-    rect.h = (event.pageY - 210) - rect.startY;
+    rect.w = (event.pageX - offset_coords.left) - rect.startX;
+    rect.h = (event.pageY - offset_coords.top) - rect.startY;
+
 
     draw();
+
+    rect.id = shapeNumber;
+    shapesArray[shapeNumber-2] = rect;
+
+
 }
+
 function mouseMove(event) {
-    //if (drag)
-    //{
+    if (drag)
+    {
 
-        //rect.w = (event.pageX - this.offsetLeft) - rect.startX;
-        //rect.h = (event.pageY - this.offsetTop) - rect.startY;
+        rect.w = (event.pageX - offset_coords.left) - rect.startX;
+        rect.h = (event.pageY - offset_coords.top) - rect.startY;
 
-        //draw();
-    //}
+        if (shapeNumber > 0)
+            remove(--shapeNumber);
+
+        draw();
+    }
 }
 
-var color = "blue";
+
+var shapeNumber = 0;
+
+var shapesArray = {};
 
 function draw()
 {
 
-    svg.innerHTML += '<rect id=temp width="' + rect.w + '" height="' + rect.h + '" x="' + rect.startX + '" y="' + rect.startY + '" style="fill:rgb(48,159,200);stroke-width:3;stroke:rgb(0,0,0)"'+ ' />';
+    var color = colorPicker.value;
+
+    svg.innerHTML += '<rect id=rect' + shapeNumber++ +' width="' + rect.w + '" height="' + rect.h + '" x="' + rect.startX + '" y="' + rect.startY +
+        '" style="fill:#' + color.charAt(0) + color.charAt(1) + color.charAt(2) + color.charAt(3) + color.charAt(4)
+        + color.charAt(5) +'"'+ ' />';
+
+
     //var array = [Math.abs(w), Math.abs(h), x, y, color, name];
     //rectArray[rectNum] = array; document.getElementById('rectArrayDisplay').innerHTML = rectArray;
 
 }
+
+function highlightShape(event)
+{
+    var i;
+
+    var xLocation = event.pageX - offset_coords.left;
+    var yLocation = event.pageY - offset_coords.top;
+
+    for (i=0; i<shapeNumber; i++)
+    {
+        if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX+shapesArray[i].w))) &&
+            ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY+shapesArray[i].h))))
+        {
+            document.getElementById("rect"+i).style.fill = '#FFFFFF';
+        }
+    }
+
+}
+
+function remove(rectangleNumber)
+{
+    var toRemove = document.getElementById("rect"+rectangleNumber);
+
+    svg.removeChild(toRemove);
+
+}
+
+
 
