@@ -44,16 +44,20 @@ function mouseDown(event) {
         width = 1;
         shapesByID[shapeNumber] = new Rect('rect',shapeNumber,startX,startY,colorPicker.value,false,height,width);
 
-        shapesByID[shapeNumber].draw();
+        shapesByID[shapeNumber].create();
 
 
     }
     else if (selectTool.checked && event.target !== event.currentTarget)
     {
         var clickedRectID = event.target.id.match(/[0-9]+/);
-        shapesByID[clickedRectID].highlightShape();
-        updateSelectedShapeData(clickedRectID);
         selectedShape = clickedRectID;
+        shapesByID[clickedRectID].highlightShape();
+        updateSelectedShapeData();
+        if (currentHandle)
+        {
+            drag = true;
+        }
     }
     else if (selectTool.checked)
     {
@@ -65,9 +69,8 @@ function mouseDown(event) {
 
 function mouseUp(event) {
     currentHandle = false;
+    drag = false;
     if (addTool.checked) {
-
-        drag = false;
         svg.style.cursor = "default";
         shapeNumber++;
     }
@@ -86,10 +89,7 @@ function mouseMove(e) {
             currentRect.startX = (mousePos.x - startX < 0) ? mousePos.x : startX;
             currentRect.startY = (mousePos.y - startY < 0) ? mousePos.y : startY;
 
-            currentRect.setStartX();
-            currentRect.setStartY();
-            currentRect.changeWidth();
-            currentRect.changeHeight();
+            currentRect.redraw();
         }
     }
 }
@@ -108,14 +108,14 @@ function deselectAll()
 }
 
 
-function updateSelectedShapeData(clickedRectID)
+function updateSelectedShapeData()
 {
-    document.getElementById("shapeId").value = shapesByID[clickedRectID].id;
-    document.getElementById("shapeColor").value = shapesByID[clickedRectID].color;
-    document.getElementById("shapeXCoordinate").value = shapesByID[clickedRectID].startX;
-    document.getElementById("shapeYCoordinate").value = shapesByID[clickedRectID].startY;
-    document.getElementById("shapeWidth").value = shapesByID[clickedRectID].width;
-    document.getElementById("shapeHeight").value = shapesByID[clickedRectID].height;
+    document.getElementById("shapeId").value = shapesByID[selectedShape].id;
+    document.getElementById("shapeColor").value = shapesByID[selectedShape].color;
+    document.getElementById("shapeXCoordinate").value = shapesByID[selectedShape].startX;
+    document.getElementById("shapeYCoordinate").value = shapesByID[selectedShape].startY;
+    document.getElementById("shapeWidth").value = shapesByID[selectedShape].width;
+    document.getElementById("shapeHeight").value = shapesByID[selectedShape].height;
 
 }
 
@@ -219,6 +219,9 @@ function mouseHandle(e) {
         }
         if (drag || currentHandle != previousHandle)
             selectShape.drawHandle(currentHandle);
+            selectShape.redraw();
+            updateSelectedShapeData();
+
     }
 
 }

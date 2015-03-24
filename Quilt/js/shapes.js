@@ -33,17 +33,21 @@ Shape.prototype.highlightShape = function()
 
 
     var toHighlight = document.getElementById(this.type+this.id);
-
+    selectedShape = this.id;
     if (toHighlight.getAttribute("stroke-width") == 0) {
         toHighlight.setAttribute("stroke-width", 3);
         toHighlight.setAttribute("stroke", "#000000");
 
-        updateSelectedShapeData(this.id);
+        updateSelectedShapeData();
     }
 };
 
 Shape.prototype.isNear = function()
 {
+    // Put code in to check if mouse cursor is near any rectangle vertices
+    // 1. Get mouse position
+    // 2. Get rectangle vertices from getHandle and put in array
+    // 3. Check if within specified distance
     return false;
 };
 
@@ -86,13 +90,21 @@ Rect.prototype.changeWidth = function()
 };
 
 // Creates HTML code based upon Rect properties and current ColorPicker value
-Rect.prototype.draw = function() {
+Rect.prototype.create = function() {
     svg.innerHTML += '<' + this.type + ' id=' + this.type + this.id +' width="' + this.width + '" height="' + this.height + '" x="' + this.startX + '" y="' + this.startY +
     '" style="fill:#' + this.color +'"'+ ' />';
 };
 
+Rect.prototype.redraw = function() {
+    this.setStartX();
+    this.setStartY();
+    this.changeWidth();
+    this.changeHeight();
+};
+
 Rect.prototype.drawHandle = function(currentHandle) {
     if (currentHandle) {
+        this.removeHandles();
         var posHandle = point(0,0);
         switch (currentHandle) {
             case 'topLeft':
