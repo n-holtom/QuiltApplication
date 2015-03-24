@@ -51,6 +51,7 @@ function mouseDown(event) {
     {
         var clickedRectID = event.target.id.match(/[0-9]+/);
         shapesByID[clickedRectID].highlightShape();
+        updateSelectedShapeData(clickedRectID);
     }
     event.stopPropagation();
 
@@ -81,23 +82,6 @@ function mouseMove(event) {
     }
 }
 
-function update(rectangleNumber)
-{
-    var toUpdate = document.getElementById("rect"+rectangleNumber);
-
-    toUpdate.setAttribute("width", rect.w);
-    toUpdate.setAttribute("height", rect.h);
-}
-
-function draw()
-{
-    rect.color = colorPicker.value;
-
-    svg.innerHTML += '<rect id=rect' + shapeNumber +' width="' + rect.w + '" height="' + rect.h + '" x="' + rect.startX + '" y="' + rect.startY +
-        '" style="fill:#' + rect.color +'"'+ ' />';
-
-}
-
 function deselectAll()
 {
     for (i = 0; i < shapeNumber; i++)
@@ -111,14 +95,14 @@ function deselectAll()
 }
 
 
-function updateSelectedShapeData()
+function updateSelectedShapeData(clickedRectID)
 {
-    document.getElementById("shapeId").value = selectedShape.id;
-    document.getElementById("shapeColor").value = selectedShape.color;
-    document.getElementById("shapeXCoordinate").value = selectedShape.startX;
-    document.getElementById("shapeYCoordinate").value = selectedShape.startY;
-    document.getElementById("shapeWidth").value = selectedShape.w;
-    document.getElementById("shapeHeight").value = selectedShape.h;
+    document.getElementById("shapeId").value = shapesByID[clickedRectID].id;
+    document.getElementById("shapeColor").value = shapesByID[clickedRectID].color;
+    document.getElementById("shapeXCoordinate").value = shapesByID[clickedRectID].startX;
+    document.getElementById("shapeYCoordinate").value = shapesByID[clickedRectID].startY;
+    document.getElementById("shapeWidth").value = shapesByID[clickedRectID].width;
+    document.getElementById("shapeHeight").value = shapesByID[clickedRectID].height;
 
 }
 

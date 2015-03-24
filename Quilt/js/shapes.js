@@ -35,10 +35,8 @@ Shape.prototype.highlightShape = function()
     if (toHighlight.getAttribute("stroke-width") == 0) {
         toHighlight.setAttribute("stroke-width", 3);
         toHighlight.setAttribute("stroke", "#000000");
-        var index = shapeID.match(/[0-9]+/);
-        selectedShape = shapesArray[index];
 
-        updateSelectedShapeData();
+        updateSelectedShapeData(this.id);
     }
 };
 
