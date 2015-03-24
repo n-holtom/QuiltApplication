@@ -53,6 +53,10 @@ function mouseDown(event) {
         shapesByID[clickedRectID].highlightShape();
         updateSelectedShapeData(clickedRectID);
     }
+    else if (selectTool.checked)
+    {
+        deselectAll();
+    }
     event.stopPropagation();
 
 }
