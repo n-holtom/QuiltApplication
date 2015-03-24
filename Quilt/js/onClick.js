@@ -74,6 +74,8 @@ function mouseUp(event) {
         svg.style.cursor = "default";
         shapeNumber++;
     }
+
+    updateSelectedShapeData();
 }
 
 function mouseMove(e) {
@@ -117,6 +119,33 @@ function updateSelectedShapeData()
     document.getElementById("shapeWidth").value = shapesByID[selectedShape].width;
     document.getElementById("shapeHeight").value = shapesByID[selectedShape].height;
 
+}
+
+function handleChangedTextBox(checkBoxName) {
+
+    if (checkBoxName == 'shapeHeight')
+    {
+        shapesByID[selectedShape].height = document.getElementById("shapeHeight").value;
+    }
+    else if (checkBoxName == 'shapeWidth')
+    {
+        shapesByID[selectedShape].width = document.getElementById("shapeWidth").value;
+    }
+    else if (checkBoxName == 'shapeYCoordinate')
+    {
+        shapesByID[selectedShape].startY = document.getElementById("shapeYCoordinate").value;
+    }
+    else if (checkBoxName == 'shapeXCoordinate')
+    {
+        shapesByID[selectedShape].startX = document.getElementById("shapeXCoordinate").value;
+    }
+    else if (checkBoxName == 'shapeColor')
+    {
+        shapesByID[selectedShape].color = document.getElementById("shapeColor").value;
+        shapesByID[selectedShape].setColor(shapesByID[selectedShape].color);
+    }
+
+        shapesByID[selectedShape].redraw();
 }
 
 function deleteSelectedShapeData()
@@ -220,7 +249,6 @@ function mouseHandle(e) {
         if (drag || currentHandle != previousHandle)
             selectShape.drawHandle(currentHandle);
             selectShape.redraw();
-            updateSelectedShapeData();
 
     }
 

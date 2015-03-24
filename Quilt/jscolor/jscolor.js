@@ -1006,5 +1006,14 @@ var jscolor = {
 
 };
 
+function changeHeight(shapeHeight)
+{
+
+}
+
+
+
+
+
 
 jscolor.install();

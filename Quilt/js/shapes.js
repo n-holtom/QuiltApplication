@@ -23,7 +23,8 @@ Shape.prototype.setStartY = function()
 
 Shape.prototype.setColor = function(color)
 {
-    this.color = color;
+    var toUpdate = document.getElementById(this.type+this.id);
+    toUpdate.style.fill = ('#'+color);
 };
 
 Shape.prototype.highlightShape = function()
