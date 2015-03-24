@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 var initialX;
 var initialY;
-var selectedShape = {};
+var selectedShape = null;
 
 var svg = document.querySelector('#svg1');
 var shapesByID = {};
@@ -52,6 +52,7 @@ function mouseDown(event) {
         var clickedRectID = event.target.id.match(/[0-9]+/);
         shapesByID[clickedRectID].highlightShape();
         updateSelectedShapeData(clickedRectID);
+        selectedShape = clickedRectID;
     }
     else if (selectTool.checked)
     {
@@ -93,9 +94,9 @@ function deselectAll()
         if (document.getElementById("rect" + i) != null)
         {
             document.getElementById("rect" + i).setAttribute("stroke-width", 0);
-            deleteSelectedShapeData();
         }
     }
+    deleteSelectedShapeData();
 }
 
 
@@ -122,17 +123,12 @@ function deleteSelectedShapeData()
 
 function deleteSelectedShape()
 {
-    remove(selectedShape.id);
-    removeHandles(selectedShape.id)
+    shapesByID[selectedShape].remove();
+    removeHandles(shapesByID[selectedShape].id);
+    deselectAll();
+    selectedShape = null;
 }
 
-function remove(rectangleNumber)
-{
-    var toRemove = document.getElementById("rect"+rectangleNumber);
-
-    svg.removeChild(toRemove);
-
-}
 
 function point(x, y) {
     return {

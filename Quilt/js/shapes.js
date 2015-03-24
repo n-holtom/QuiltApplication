@@ -45,6 +45,14 @@ Shape.prototype.isNear = function()
     return false;
 };
 
+Shape.prototype.remove = function()
+{
+    var toRemove = document.getElementById(this.type+this.id);
+    svg.removeChild(toRemove);
+
+    //DELETE FROM OBJECT ARRAY?
+};
+
 
 // Rectangle constructor
 function Rect(type, id, startX, startY, color, selected, height, width)
