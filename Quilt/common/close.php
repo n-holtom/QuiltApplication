@@ -4,4 +4,5 @@
 <?php echo "\n\t</div>\n\n</body>\n\n</html>" ?>
 
 
-<script type="text/javascript" src="onClick.js"></script>
+<script type="text/javascript" src="js/onClick.js"></script>
+<script type="text/javascript" src="js/shapes.js"></script>

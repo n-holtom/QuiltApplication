@@ -6,8 +6,8 @@ var initialX;
 var initialY;
 var selectedShape = {};
 
-var svg = document.getElementById('svg1');
-var rect = {};
+var svg = document.querySelector('#svg1');
+var shapesByID = {};
 var drag = false;
 var colorPicker = document.getElementById('colorPicker');
 var selectTool = document.getElementById('selectRectangle');
@@ -16,6 +16,10 @@ var offset_coords = $("#svg1").offset();
 
 var handleSize = 10;
 var currentHandle = false;
+
+var shapeNumber = 0;
+
+var shapesArray = {};
 
 
 
@@ -28,26 +32,27 @@ function init() {
 
 
 function mouseDown(event) {
-
     if (addTool.checked)
     {
-
         // Set start coordinates of rectangle
-        rect.startX = event.pageX - offset_coords.left;
-        rect.startY = event.pageY - offset_coords.top;
-        rect.h = 1;
-        rect.w = 1;
-        rect.id = shapeNumber;
+        startX = event.pageX - offset_coords.left;
+        startY = event.pageY - offset_coords.top;
+        height = 1;
+        width = 1;
+        shapesByID[shapeNumber] = new Rect('rect',shapeNumber,startX,startY,colorPicker.value,false,height,width);
 
-        draw();
+        shapesByID[shapeNumber].draw();
+
 
         // Allow drag functionality
         drag = true;
     }
-    else if (selectTool.checked)
+    else if (selectTool.checked && event.target !== event.currentTarget)
     {
-        highlightShape(event.pageX, event.pageY);
+        var clickedRectID = event.target.id.match(/[0-9]+/);
+        shapesByID[clickedRectID].highlightShape();
     }
+    event.stopPropagation();
 
 }
 
@@ -56,16 +61,6 @@ function mouseUp(event) {
     if (addTool.checked) {
 
         drag = false;
-
-        shapesArray[shapeNumber] = {};
-
-        shapesArray[shapeNumber].w = rect.w;
-        shapesArray[shapeNumber].h = rect.h;
-        shapesArray[shapeNumber].startX = rect.startX;
-        shapesArray[shapeNumber].startY = rect.startY;
-        shapesArray[shapeNumber].id = shapeNumber;
-        shapesArray[shapeNumber].color = rect.color;
-        shapesArray[shapeNumber].selected = false;
 
 
         shapeNumber++;
@@ -76,10 +71,12 @@ function mouseMove(event) {
     if (addTool.checked)
     {
         if (drag) {
-            rect.w = (event.pageX - offset_coords.left) - rect.startX;
-            rect.h = (event.pageY - offset_coords.top) - rect.startY;
+            var currentRect = shapesByID[shapeNumber];
+            currentRect.width = (event.pageX - offset_coords.left) - currentRect.startX;
+            currentRect.height = (event.pageY - offset_coords.top) - currentRect.startY;
 
-            update(shapeNumber);
+            currentRect.changeHeight();
+            currentRect.changeWidth();
         }
     }
 }
@@ -92,10 +89,6 @@ function update(rectangleNumber)
     toUpdate.setAttribute("height", rect.h);
 }
 
-var shapeNumber = 0;
-
-var shapesArray = {};
-
 function draw()
 {
     rect.color = colorPicker.value;
@@ -105,44 +98,18 @@ function draw()
 
 }
 
-function highlightShape(x, y)
+function deselectAll()
 {
-         var i;
-
-        var xLocation = x - offset_coords.left;
-        var yLocation = y - offset_coords.top;
-
-        // Deselect all shapes
-        for (i = 0; i < shapeNumber; i++)
+    for (i = 0; i < shapeNumber; i++)
+    {
+        if (document.getElementById("rect" + i) != null)
         {
-            if (document.getElementById("rect" + i) != null)
-            {
-                document.getElementById("rect" + i).setAttribute("stroke-width", 0);
-                deleteSelectedShapeData();
-            }
+            document.getElementById("rect" + i).setAttribute("stroke-width", 0);
+            deleteSelectedShapeData();
         }
-
-        for (i = 0; i < shapeNumber; i++)
-        {
-
-            if (((xLocation > shapesArray[i].startX) && (xLocation < (shapesArray[i].startX + shapesArray[i].w))) &&
-                ((yLocation > shapesArray[i].startY) && (yLocation < (shapesArray[i].startY + shapesArray[i].h)))) {
-                var toHighlight = document.getElementById("rect" + i);
-
-                if (toHighlight.getAttribute("stroke-width") == 0) {
-                    document.getElementById("rect" + i).setAttribute("stroke-width", 3);
-                    document.getElementById("rect" + i).setAttribute("stroke", "#000000");
-                    selectedShape = shapesArray[i];
-
-                    updateSelectedShapeData();
-                }
-                else {
-                    document.getElementById("rect" + i).setAttribute("stroke-width", 0);
-                }
-            }
-        }
-
+    }
 }
+
 
 function updateSelectedShapeData()
 {
