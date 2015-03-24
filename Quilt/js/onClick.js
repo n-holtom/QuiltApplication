@@ -34,6 +34,9 @@ function init() {
 function mouseDown(event) {
     if (addTool.checked)
     {
+        // Allow drag functionality
+        drag = true;
+        svg.style.cursor = "crosshair";
         // Set start coordinates of rectangle
         startX = event.pageX - offset_coords.left;
         startY = event.pageY - offset_coords.top;
@@ -44,8 +47,6 @@ function mouseDown(event) {
         shapesByID[shapeNumber].draw();
 
 
-        // Allow drag functionality
-        drag = true;
     }
     else if (selectTool.checked && event.target !== event.currentTarget)
     {
@@ -67,24 +68,41 @@ function mouseUp(event) {
     if (addTool.checked) {
 
         drag = false;
-
-
+        svg.style.cursor = "default";
         shapeNumber++;
     }
 }
 
 function mouseMove(event) {
-    if (addTool.checked)
+    if (drag)
     {
-        if (drag) {
+        if (addTool.checked)
+         {
             var currentRect = shapesByID[shapeNumber];
-            currentRect.width = (event.pageX - offset_coords.left) - currentRect.startX;
-            currentRect.height = (event.pageY - offset_coords.top) - currentRect.startY;
+            var mx = mouseX(event);
+            var my = mouseY(event);
+            currentRect.width = Math.abs(mx - currentRect.startX);
+            currentRect.height = Math.abs(my - currentRect.startY);
 
-            currentRect.changeHeight();
+            currentRect.startX = (mx - currentRect.startX < 0) ? mx : currentRect.startX;
+            currentRect.startY = (my - currentRect.startY < 0) ? my : currentRect.startY;
+
+            currentRect.setStartX();
+            currentRect.setStartY();
             currentRect.changeWidth();
+            currentRect.changeHeight();
         }
     }
+}
+
+function mouseX(event) {
+    mx = event.pageX - offset_coords.left;
+    return mx;
+}
+
+function mouseY(event) {
+    my = event.pageY - offset_coords.top;
+    return my;
 }
 
 function deselectAll()

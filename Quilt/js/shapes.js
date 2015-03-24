@@ -9,14 +9,16 @@ var Shape = function(type, id, startX, startY, color, selected)
     this.selected = selected;
 };
 
-Shape.prototype.setStartX = function(startX)
+Shape.prototype.setStartX = function()
 {
-    this.startX = startX;
+    var toUpdate = document.getElementById(this.type+this.id);
+    toUpdate.setAttribute("x", this.startX);
 };
 
-Shape.prototype.setStartY = function(startY)
+Shape.prototype.setStartY = function()
 {
-    this.startY = startY;
+    var toUpdate = document.getElementById(this.type+this.id);
+    toUpdate.setAttribute("y", this.startY);
 };
 
 Shape.prototype.setColor = function(color)
