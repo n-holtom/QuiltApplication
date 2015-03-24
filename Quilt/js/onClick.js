@@ -96,13 +96,14 @@ function mouseMove(e) {
 
 function deselectAll()
 {
-    for (i = 0; i < shapeNumber; i++)
+    for (var i = 0; i < shapeNumber; i++)
     {
         if (document.getElementById("rect" + i) != null)
         {
             document.getElementById("rect" + i).setAttribute("stroke-width", 0);
         }
     }
+    selectedShape = null;
     deleteSelectedShapeData();
 }
 
@@ -131,9 +132,8 @@ function deleteSelectedShapeData()
 function deleteSelectedShape()
 {
     shapesByID[selectedShape].remove();
-    removeHandles(shapesByID[selectedShape].id);
+    shapesByID[selectedShape].removeHandles();
     deselectAll();
-    selectedShape = null;
 }
 
 
