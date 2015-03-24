@@ -81,11 +81,11 @@ function mouseMove(event) {
             var currentRect = shapesByID[shapeNumber];
             var mx = mouseX(event);
             var my = mouseY(event);
-            currentRect.width = Math.abs(mx - currentRect.startX);
-            currentRect.height = Math.abs(my - currentRect.startY);
+            currentRect.width = Math.abs(mx - startX);
+            currentRect.height = Math.abs(my - startY);
 
-            currentRect.startX = (mx - currentRect.startX < 0) ? mx : currentRect.startX;
-            currentRect.startY = (my - currentRect.startY < 0) ? my : currentRect.startY;
+            currentRect.startX = (mx - startX < 0) ? mx : startX;
+            currentRect.startY = (my - startY < 0) ? my : startY;
 
             currentRect.setStartX();
             currentRect.setStartY();
