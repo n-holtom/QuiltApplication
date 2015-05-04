@@ -219,6 +219,8 @@ function getHandle(mouse) {
     return false;
 }
 
+
+
 function mouseHandle(e) {
     var selectShape = shapesByID[selectedShape];
     if (selectTool.checked && selectedShape != null) {

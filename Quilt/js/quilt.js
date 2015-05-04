@@ -8,15 +8,15 @@ var Quilt = function(dimensionsX, dimensionsY)
 
 //QuiltSquare.prototype = Object.create(Shape.prototype);
 
-// Set "constructor" property to refer to Rect
+// Set "constructor" property to refer to Quilt
 Quilt.prototype.constructor = Quilt;
 
-Quilt.prototype.addQuiltSquare(squareToAdd)
+Quilt.prototype.addQuiltSquare = function(squareToAdd)
 {
     this.squareArray[this.squareArray.length] = squareToAdd;
-}
+};
 
-Quilt.prototype.removeQuiltSquar()
+Quilt.prototype.removeQuiltSquare = function()
 {
     this.squareArray.length--;
-}
+};

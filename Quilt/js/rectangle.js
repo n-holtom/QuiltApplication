@@ -1,5 +1,5 @@
 // Rectangle constructor
-function Rect(type, id, startX, startY, color, selected, height, width)
+var Rect = function(type, id, startX, startY, color, selected, height, width)
 {
     // Inherits from shape object
     Shape.call(this, type, id, startX, startY, color, selected);

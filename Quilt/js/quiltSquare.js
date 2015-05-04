@@ -9,12 +9,12 @@ var QuiltSquare = function()
 // Set "constructor" property to refer to Rect
 QuiltSquare.prototype.constructor = QuiltSquare;
 
-QuiltSquare.prototype.addShape(shapeToAdd)
+QuiltSquare.prototype.addShape = function(shapeToAdd)
 {
     this.shapeArray[this.shapeArray.length] = shapeToAdd;
-}
+};
 
-QuiltSquare.prototype.removeShape()
+QuiltSquare.prototype.removeShape = function()
 {
     this.shapeArray.length--;
-}
+};
