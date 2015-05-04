@@ -70,12 +70,33 @@ function mouseDown(event) {
 function mouseUp(event) {
     currentHandle = false;
     drag = false;
+
     if (addTool.checked) {
+
         svg.style.cursor = "default";
-        shapeNumber++;
+
+        if (checkRectangleSize())
+        {
+            shapeNumber++;
+        }
     }
 
     updateSelectedShapeData();
+}
+
+// Check if rectangle is big enough
+function checkRectangleSize()
+{
+    var currentRect = shapesByID[shapeNumber];
+
+    if ((currentRect.height < 10) || (currentRect.width < 10))
+    {
+        currentRect.remove();
+        currentRect.removeHandles();
+        return false;
+    }
+
+    return true;
 }
 
 function mouseMove(e) {
