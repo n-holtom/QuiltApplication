@@ -6,3 +6,6 @@
 
 <script type="text/javascript" src="js/onClick.js"></script>
 <script type="text/javascript" src="js/shapes.js"></script>
+<script type="text/javascript" src="js/quiltSquare.js"></script>
+<script type="text/javascript" src="js/rectangle.js"></script>
+<script type="text/javascript" src="js/quilt.js"></script>
