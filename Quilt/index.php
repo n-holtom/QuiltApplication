@@ -6,6 +6,7 @@
     include_once "common/toolbar.php";
     include_once "common/toolbox.php";
     include_once "common/object-menu.php";
+    include_once "popupform.php";
 ?>
 
         <div id="main">

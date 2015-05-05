@@ -169,7 +169,7 @@ function handleChangedTextBox(checkBoxName) {
         shapesByID[selectedShape].setColor(shapesByID[selectedShape].color);
     }
 
-        shapesByID[selectedShape].redraw();
+    shapesByID[selectedShape].redraw();
 }
 
 function deleteSelectedShapeData()

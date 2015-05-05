@@ -59,7 +59,7 @@ hr {
 */
 @font-face{
     font-family: "Karamuruh";
-    src: url('fonts/karamuruh.ttf');
+    src: url('fonts/Karamuruh.ttf');
 }
 
 #header {
@@ -84,6 +84,7 @@ hr {
     z-index: 1;
     overflow: hidden;
     font-size: 6em;
+    padding-top: 20px;
 
 }
 
@@ -199,3 +200,43 @@ svg {
     background-color: #c0c0c0;
     height: 20px;
 }
+
+/*
+Popup
+*/
+
+#mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9000;
+    background-color: #000;
+    display: none;
+}
+
+#boxes .window {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 440px;
+    height: 200px;
+    display: none;
+    z-index: 9999;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: left;
+}
+
+#boxes #dialog {
+    width: 750px;
+    height: 300px;
+    padding: 10px;
+    background-color: #ffffff;
+    font-family: 'Segoe UI Light', sans-serif;
+    font-size: 15pt;
+}
+
+#boxes h1{
+    text-align: center;
+}
+

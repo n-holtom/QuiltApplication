@@ -1,5 +1,5 @@
 // Quilt constructor
-var Document = function(preferences, quilt, author)
+var Doc = function(preferences, quilt, author)
 {
     this.preferences = preferences;
     this.quilt = quilt;
@@ -9,5 +9,6 @@ var Document = function(preferences, quilt, author)
 //QuiltSquare.prototype = Object.create(Shape.prototype);
 
 // Set "constructor" property to refer to Rect
-Document.prototype.constructor = Document;
+//Doc.prototype.constructor = Doc;
+
 

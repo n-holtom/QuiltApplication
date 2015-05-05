@@ -88,7 +88,7 @@ Rect.prototype.drawCorner = function(handle, x, y, handleSize) {
     svg.innerHTML += '<circle id=' + this.type + this.id + handle +' cx="' + x + '" cy="' + y + '" r="' + handleSize + '" fill=black" />';
 };
 
-Rect.prototype.removeHandles = function removeHandles() {
+Rect.prototype.removeHandles = function() {
     var rectID = this.type + this.id;
     var toRemove = document.getElementById(rectID + 'topLeft');
     if (toRemove != null)
