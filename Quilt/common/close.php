@@ -9,3 +9,4 @@
 <script type="text/javascript" src="js/quiltSquare.js"></script>
 <script type="text/javascript" src="js/rectangle.js"></script>
 <script type="text/javascript" src="js/quilt.js"></script>
+<script type="text/javascript" src="js/command.js"></script>
