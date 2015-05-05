@@ -7,7 +7,7 @@ var initialY;
 var selectedShape = null;
 
 var svg = document.querySelector('#svg1');
-var shapesByID = {};
+var shapesByID = new Array();
 var drag = false;
 var colorPicker = document.getElementById('colorPicker');
 var selectTool = document.getElementById('selectRectangle');
@@ -19,7 +19,9 @@ var currentHandle = false;
 
 var shapeNumber = 0;
 
-var shapesArray = {};
+var shapesArray = new Array();
+
+var commandStack = new Array();
 
 
 
@@ -71,7 +73,8 @@ function mouseUp(event) {
     currentHandle = false;
     drag = false;
 
-    if (addTool.checked) {
+    if (addTool.checked)
+    {
 
         svg.style.cursor = "default";
 
